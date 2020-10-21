@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+
+  nexus:
+    image: registry$DNS_SUFFIX/usine-logicielle/nexus
+    networks:
+      - front-network
+      - back-network
+    volumes:
+      - nexus-volume:/sonatype-work/storage
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+          - node.labels.artifact == true
+      labels:
+        - "traefik.docker.network=front-network"
+        - "traefik.http.routers.artifact.entrypoints=https"
+        - "traefik.http.routers.artifact.tls=true"
+        - "traefik.http.routers.artifact.tls.certresolver=myhttpchallenge"
+        - "traefik.http.routers.artifact.rule=Host(`artifact$DNS_SUFFIX`)"
+        #- "traefik.http.middlewares.artifact-addprefix.addprefix.prefix=/nexus"
+        #- "traefik.http.routers.artifact.middlewares=artifact-addprefix"
+        - "traefik.http.middlewares.artifact-redirect.redirectregex.permanent=true"
+        - "traefik.http.middlewares.artifact-redirect.redirectregex.regex=^https://artifact$DNS_SUFFIX/$$"
+        - "traefik.http.middlewares.artifact-redirect.redirectregex.replacement=https://artifact$DNS_SUFFIX/nexus/"
+        - "traefik.http.routers.artifact.middlewares=artifact-redirect"
+        - "traefik.http.services.artifact.loadbalancer.server.port=8081"
+
+volumes:
+
+  nexus-volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=UL-Storage-VM
+      device: :/data/nexus
+
+networks:
+
+  front-network:
+    external: true
+
+  back-network:
+    external: true

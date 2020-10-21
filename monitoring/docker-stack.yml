@@ -1,0 +1,85 @@
+version: "3.7"
+
+services:
+
+  grafana:
+    image: registry$DNS_SUFFIX/usine-logicielle/grafana
+    networks:
+      - front-network
+      - back-network
+    volumes:
+      - grafana-volume:/var/lib/grafana
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+          - node.labels.monitor == true
+      labels:
+        - "traefik.docker.network=front-network"
+        - "traefik.http.routers.monitor.entrypoints=https"
+        - "traefik.http.routers.monitor.tls=true"
+        - "traefik.http.routers.monitor.tls.certresolver=myhttpchallenge"
+        - "traefik.http.routers.monitor.rule=Host(`monitor$DNS_SUFFIX`)"
+        - "traefik.http.routers.monitor.middlewares=monitor-auth"
+        - "traefik.http.middlewares.monitor-auth.basicauth.users=$BASIC_AUTH_USERS"
+        - "traefik.http.middlewares.monitor-auth.basicauth.removeheader=true"
+        - "traefik.http.services.monitor.loadbalancer.server.port=3000"
+
+  prometheus:
+    image: registry$DNS_SUFFIX/usine-logicielle/prometheus
+    networks:
+      - back-network
+    volumes:
+      - prometheus-volume:/prometheus
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+          - node.labels.monitor == true
+
+  node-exporter:
+    image: registry$DNS_SUFFIX/usine-logicielle/node-exporter
+    networks:
+      - back-network
+    volumes:
+      - /:/rootfs:ro
+      - /proc:/host/proc
+      - /sys:/host/sys
+    deploy:
+      mode: global
+
+  cadvisor:
+    image: registry$DNS_SUFFIX/usine-logicielle/cadvisor
+    networks:
+      - back-network
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    deploy:
+      mode: global
+
+volumes:
+
+  grafana-volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=UL-Storage-VM
+      device: :/data/grafana
+
+  prometheus-volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=UL-Storage-VM
+      device: :/data/prometheus
+
+networks:
+
+  front-network:
+    external: true
+
+  back-network:
+    external: true

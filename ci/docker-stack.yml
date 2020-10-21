@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+
+  jenkins:
+    image: registry$DNS_SUFFIX/usine-logicielle/jenkins
+    networks:
+      - front-network
+      - back-network
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - jenkins-volume:/var/jenkins_home
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+          - node.labels.ci == true
+      labels:
+        - "traefik.docker.network=front-network"
+        - "traefik.http.routers.ci.entrypoints=https"
+        - "traefik.http.routers.ci.tls=true"
+        - "traefik.http.routers.ci.tls.certresolver=myhttpchallenge"
+        - "traefik.http.routers.ci.rule=Host(`ci$DNS_SUFFIX`)"
+        - "traefik.http.services.ci.loadbalancer.server.port=8080"
+
+volumes:
+
+  jenkins-volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=UL-Storage-VM
+      device: :/data/jenkins
+
+networks:
+
+  front-network:
+    external: true
+
+  back-network:
+    external: true

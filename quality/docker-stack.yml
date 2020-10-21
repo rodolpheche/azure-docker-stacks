@@ -1,0 +1,67 @@
+version: "3.7"
+
+services:
+
+  sonarqube:
+    image: registry$DNS_SUFFIX/usine-logicielle/sonar
+    networks:
+      - front-network
+      - back-network
+    volumes:
+      - sonarqube-data-volume:/opt/sonarqube/data
+      - sonarqube-extensions-volume:/opt/sonarqube/extensions
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+          - node.labels.quality == true
+      labels:
+        - "traefik.docker.network=front-network"
+        - "traefik.http.routers.quality.entrypoints=https"
+        - "traefik.http.routers.quality.tls=true"
+        - "traefik.http.routers.quality.tls.certresolver=myhttpchallenge"
+        - "traefik.http.routers.quality.rule=Host(`quality$DNS_SUFFIX`)"
+        - "traefik.http.services.quality.loadbalancer.server.port=9000"
+
+  postgres:
+    image: registry$DNS_SUFFIX/usine-logicielle/postgres
+    networks:
+      - back-network
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+          - node.labels.quality == true
+
+volumes:
+
+  sonarqube-data-volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=UL-Storage-VM
+      device: :/data/sonarqube-data
+
+  sonarqube-extensions-volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=UL-Storage-VM
+      device: :/data/sonarqube-extensions
+
+  postgres-volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=UL-Storage-VM
+      device: :/data/postgres
+
+networks:
+
+  front-network:
+    external: true
+
+  back-network:
+    external: true

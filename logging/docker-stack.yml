@@ -1,0 +1,62 @@
+version: "3.7"
+
+services:
+
+  elasticsearch:
+    image: registry$DNS_SUFFIX/usine-logicielle/elasticsearch
+    networks:
+      - back-network
+    volumes:
+      - elasticsearch-volume:/usr/share/elasticsearch/data
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+
+  logstash:
+    image: registry$DNS_SUFFIX/usine-logicielle/logstash
+    networks:
+      - back-network
+    ports:
+      - 12201:12201
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+
+  kibana:
+    image: registry$DNS_SUFFIX/usine-logicielle/kibana
+    networks:
+      - front-network
+      - back-network
+    deploy:
+      placement:
+        constraints:
+          - node.role != manager
+      labels:
+        - "traefik.docker.network=front-network"
+        - "traefik.http.routers.logging.entrypoints=https"
+        - "traefik.http.routers.logging.tls=true"
+        - "traefik.http.routers.logging.tls.certresolver=myhttpchallenge"
+        - "traefik.http.routers.logging.rule=Host(`log$DNS_SUFFIX`)"
+        - "traefik.http.routers.logging.middlewares=logging-auth"
+        - "traefik.http.middlewares.logging-auth.basicauth.users=$BASIC_AUTH_USERS"
+        - "traefik.http.middlewares.logging-auth.basicauth.removeheader=true"
+        - "traefik.http.services.logging.loadbalancer.server.port=5601"
+
+volumes:
+
+  elasticsearch-volume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=UL-Storage-VM
+      device: :/data/elasticsearch
+
+networks:
+
+  front-network:
+    external: true
+
+  back-network:
+    external: true

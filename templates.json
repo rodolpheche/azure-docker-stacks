@@ -1,0 +1,154 @@
+[
+  {
+    "type": 2,
+    "title": "Security System",
+    "description": "OpenLDAP & phpLDAPadmin",
+    "note": "Deploys OpenLDAP & phpLDAPadmin",
+    "categories": ["security"],
+    "platform": "linux",
+    "logo": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks/-/raw/master/directory/logo.png",
+    "repository": {
+      "url": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks",
+      "stackfile": "directory/docker-stack.yml"
+    },
+    "env": [
+      {
+        "name": "DNS_SUFFIX",
+        "label": "DNS Suffix",
+        "description": "DNS Suffix (eg. .ul.cnav.fr)."
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "title": "Version Control System",
+    "description": "Gitlab",
+    "note": "Deploys Gitlab",
+    "categories": ["vcs"],
+    "platform": "linux",
+    "logo": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks/-/raw/master/vcs/logo.png",
+    "repository": {
+      "url": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks",
+      "stackfile": "vcs/docker-stack.yml"
+    },
+    "env": [
+      {
+        "name": "DNS_SUFFIX",
+        "label": "DNS Suffix",
+        "description": "DNS Suffix (eg. .ul.cnav.fr)."
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "title": "Continuous Integration",
+    "description": "Jenkins",
+    "note": "Deploys Jenkins",
+    "categories": ["ci"],
+    "platform": "linux",
+    "logo": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks/-/raw/master/ci/logo.png",
+    "repository": {
+      "url": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks",
+      "stackfile": "ci/docker-stack.yml"
+    },
+    "env": [
+      {
+        "name": "DNS_SUFFIX",
+        "label": "DNS Suffix",
+        "description": "DNS Suffix (eg. .ul.cnav.fr)."
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "title": "Artifact Repository",
+    "description": "Nexus",
+    "note": "Deploys Nexus",
+    "categories": ["artifact"],
+    "platform": "linux",
+    "logo": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks/-/raw/master/artifact/logo.png",
+    "repository": {
+      "url": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks",
+      "stackfile": "artifact/docker-stack.yml"
+    }
+    ,
+    "env": [
+      {
+        "name": "DNS_SUFFIX",
+        "label": "DNS Suffix",
+        "description": "DNS Suffix (eg. .ul.cnav.fr)."
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "title": "Quality System",
+    "description": "Sonarqube & PostgreSQL",
+    "note": "Deploys Sonarqube & PostgreSQL",
+    "categories": ["quality"],
+    "platform": "linux",
+    "logo": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks/-/raw/master/quality/logo.png",
+    "repository": {
+      "url": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks",
+      "stackfile": "quality/docker-stack.yml"
+    }
+    ,
+    "env": [
+      {
+        "name": "DNS_SUFFIX",
+        "label": "DNS Suffix",
+        "description": "DNS Suffix (eg. .ul.cnav.fr)."
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "title": "Logging System",
+    "description": "ElasticSearch, Logstash & Kibana",
+    "note": "Deploys ElasticSearch, Logstash & Kibana",
+    "categories": ["logging"],
+    "platform": "linux",
+    "logo": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks/-/raw/master/logging/logo.png",
+    "repository": {
+      "url": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks",
+      "stackfile": "logging/docker-stack.yml"
+    },
+    "env": [
+      {
+        "name": "BASIC_AUTH_USERS",
+        "label": "Traefik basic auth users",
+        "description": "Basic auth users used by Traefik."
+      },
+      {
+        "name": "DNS_SUFFIX",
+        "label": "DNS Suffix",
+        "description": "DNS Suffix (eg. .ul.cnav.fr)."
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "title": "Monitoring System",
+    "description": "Grafana, Prometheus, Node Exporter & cAdvisor",
+    "note": "Deploys Grafana, Prometheus, Node Exporter & cAdvisor",
+    "categories": ["monitoring"],
+    "platform": "linux",
+    "logo": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks/-/raw/master/monitoring/logo.png",
+    "repository": {
+      "url": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks",
+      "stackfile": "monitoring/docker-stack.yml"
+    },
+    "env": [
+      {
+        "name": "BASIC_AUTH_USERS",
+        "label": "Traefik basic auth users",
+        "description": "Basic auth users used by Traefik."
+      },
+      {
+        "name": "DNS_SUFFIX",
+        "label": "DNS Suffix",
+        "description": "DNS Suffix (eg. .ul.cnav.fr)."
+      }
+    ]
+  }
+]
