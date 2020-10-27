@@ -150,5 +150,20 @@
         "description": "DNS Suffix (eg. .ul.cnav.fr)."
       }
     ]
+  },
+  {
+    "type": 1,
+    "title": "Bastion",
+    "description": "High performance web server",
+    "logo": "https://cloudinovasi.id/assets/img/logos/nginx.png",
+    "image": "kroniak/ssh-client:latest",
+    "command": "tail -f /dev/null",
+    "volumes": [
+      {
+        "container": "/root/.ssh/id_rsa",
+        "bind": "/home/archi/.ssh/id_rsa",
+        "readonly": true
+      }
+    ]
   }
 ]
