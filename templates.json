@@ -8,7 +8,7 @@
     "platform": "linux",
     "logo": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks/-/raw/master/directory/logo.png",
     "repository": {
-      "url": "https://github.com/rodolpheche/azure-docker-stacks",
+      "url": "https://github.com/rodolpheche/azure-docker-stacks.git",
       "stackfile": "directory/docker-stack.yml"
     },
     "env": [
@@ -28,7 +28,7 @@
     "platform": "linux",
     "logo": "https://vcs.ul.cnav.fr/ptn/azure-docker-stacks/-/raw/master/vcs/logo.png",
     "repository": {
-      "url": "https://github.com/rodolpheche/azure-docker-stacks",
+      "url": "https://github.com/rodolpheche/azure-docker-stacks.git",
       "stackfile": "vcs/docker-stack.yml"
     },
     "env": [
