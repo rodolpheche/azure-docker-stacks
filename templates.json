@@ -11,7 +11,6 @@
       "url": "https://github.com/rodolpheche/azure-docker-stacks",
       "stackfile": "directory/docker-stack.yml"
     },
-    "stackfile": "directory/docker-stack.yml",
     "env": [
       {
         "name": "DNS_SUFFIX",
@@ -32,7 +31,6 @@
       "url": "https://github.com/rodolpheche/azure-docker-stacks",
       "stackfile": "vcs/docker-stack.yml"
     },
-    "stackfile": "directory/docker-stack.yml",
     "env": [
       {
         "name": "DNS_SUFFIX",
